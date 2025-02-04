@@ -6,20 +6,19 @@ import com.example.core.di.AndroidDependenciesProvider
 import com.example.myapplication.TestApp
 import com.example.core.di.ApplicationProvider
 import com.example.core.di.android.AndroidDependenciesComponent
+import com.example.core.di.android.AndroidDependenciesModule
 import dagger.Component
 
+
+@Component(modules = [AndroidDependenciesModule::class])
 interface ApplicationComponent : ApplicationProvider {
 
     companion object {
 
         fun init(app: TestApp) : ApplicationProvider {
-
-            val androidDependenciesProvider = AndroidDependenciesComponent.create(app)
-
+            val androidDependenciesModule = AndroidDependenciesModule(app)
             return DaggerApplicationComponent.factory()
-                .create(
-                    androidDependenciesProvider
-                )
+                .create(androidDependenciesModule)
         }
 
     }
@@ -28,7 +27,7 @@ interface ApplicationComponent : ApplicationProvider {
     @Component.Factory
     interface Factory {
         fun create(
-            androidDependenciesProvider: AndroidDependenciesProvider
+            androidDependenciesModule: AndroidDependenciesModule
         ): ApplicationComponent
     }
 
